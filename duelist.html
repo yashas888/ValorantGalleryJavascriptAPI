@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Duelists</title>
+</head>
+
+<body>
+    <div class="container">
+        <header class="text-center mt-5">
+            <h1 class="">Duelists</h1>
+        </header>
+    </div>
+    <div class="agent-cards mt-5 d-flex flex-wrap row-gap-4 column-gap-4 justify-content-center align-items-center"
+        style="height: 200px;">
+        <!-- card gets generate here through javaScript -->
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const api_url =
+            "https://valorant-api.com/v1/agents";
+        let desc = document.querySelector(".card-text")
+        let aname = document.querySelector(".card-title")
+        let image = document.querySelector(".card-img-top")
+        let agentcards = document.querySelector(".agent-cards")
+        fetch(api_url)
+            .then((response) => response.json())
+            .then((value) => {
+                let arr = Array.from(value.data);
+                arr.forEach((ele) => {
+                    if (ele.isPlayableCharacter == true && ele.role.displayName == "Duelist") {
+                        agentcards.innerHTML += getHtml(ele.fullPortrait, ele.displayName, ele.uuid);
+                    }
+                })
+                function getHtml(fullPortrait, displayName, uuid) {
+                    return `<div class="card" style="width: 25rem; height:500px">
+            <img src="${fullPortrait}" class="card-img-top" alt="...">
+            <div class="card-body">
+            <h5 class="card-title text-center">${displayName}</h5>
+            <a href="details.html?id=${uuid}" class="btn btn-primary d-flex justify-content-center">View Agent Details</a>
+            </div>
+            </div>`
+                }
+            });
+    </script>
+</body>
+</html>
